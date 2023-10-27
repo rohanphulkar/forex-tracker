@@ -7,15 +7,15 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.get("/convert/:currency", async (req, res) => {
+app.get("/convert/:currency/:div", async (req, res) => {
   try {
-    const { currency } = req.params;
+    const { currency, div } = req.params;
 
     if (!currency) {
       return res.status(400).json({ error: "Missing currency code" });
     }
 
-    const exchangeRate = await scrapeExchangeRate(currency);
+    const exchangeRate = await scrapeExchangeRate(currency, div);
 
     if (exchangeRate === "Error") {
       return res.status(500).json({ error: "Error scraping exchange rate" });
